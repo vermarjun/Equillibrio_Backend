@@ -39,7 +39,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/events', eventRoutes);
 
 // Start the server
-const PORT = 8000 || process.env.PORT;
+const PORT = 3000 || process.env.PORT;
 app.listen(PORT, async () => {
     await connectDB();
     console.log(`Server running at port ${PORT}`);
