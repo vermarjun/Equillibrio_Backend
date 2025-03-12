@@ -23,9 +23,9 @@ export const fetchEvents = async (req, res) => {
 // Delete event
 export const deleteEvents = async (req, res) => {
     try {
-        const {name} = req.body;
+        const {_id} = req.body;
         
-        if (!name){
+        if (!_id){
             return res.status(400).json({
                 response: null,
                 message: "Name of the event is required to delete it",
@@ -34,7 +34,7 @@ export const deleteEvents = async (req, res) => {
         } 
         
         // Check if the event exists or not
-        const existingEvent = await Event.findOne({name});
+        const existingEvent = await Event.findOne({_id});
         if (!existingEvent) {
             return res.status(400).json({ 
                 message: 'Event hai hi nhi delete kaise hoga', 
@@ -43,7 +43,7 @@ export const deleteEvents = async (req, res) => {
         }
         
         // Create a new event
-        const deletedEvent = await Event.deleteMany({name});
+        const deletedEvent = await Event.deleteMany({_id});
 
         return res.status(201).json({ 
             response: deletedEvent,
@@ -63,26 +63,27 @@ export const deleteEvents = async (req, res) => {
 // Update event
 export const updateEvents = async (req, res) => {
     try {
-        const {name ,title ,description ,image ,department , place} = req.body;
+        const {_id, name ,title ,description ,image ,department , place} = req.body;
         
-        if (!name){
+        if (!_id){
             return res.status(400).json({
                 response: null,
-                message: "Name of the event is required to update it",
+                message: "_id of the event is required to update it",
                 success: false
             })
         } 
         
         // Check if the event exists
-        const existingEvent = await Event.findOne({name});
+        const existingEvent = await Event.findOne({_id});
         if (!existingEvent) {
             return res.status(400).json({ 
-                message: 'No such event exists, check name for typo', 
+                message: 'No such event exists, check _id for typo', 
                 success: false 
             });
         }
 
         // jo jo user ne request me bheja hai i.e jo jo non null hai update it
+        if (name) existingEvent.name = name;
         if (title) existingEvent.title = title;
         if (description) existingEvent.description = description;
         if (image) existingEvent.image = image;
